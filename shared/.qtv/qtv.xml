@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QTV>
+    <name>Standby</name>
+    <type>application</type>
+	<arch>x86_64</arch>
+	<base>ubuntu-18.04</base>
+    <start>/opt/startup_shell/startup_pdulvp-nas-standby.sh</start>
+    <stop>/opt/startup_shell/stop_pdulvp-nas-standby.sh</stop>
+
+    <needMouse>false</needMouse>
+    <version>0.1</version>
+    <icon_tv>.qtv/tv.png</icon_tv>
+    <icon_phone>.qtv/phone.png</icon_phone>
+    <icon_pad>.qtv/pad.png</icon_pad>
+    <description>Put your NAS in pdulvp-nas-standby mode directly through HD-Station</description>
+    <disclaim>Use carefully</disclaim>
+</QTV>

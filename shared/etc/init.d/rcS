@@ -1,0 +1,25 @@
+#!/bin/sh
+CONF=/etc/config/qpkg.conf
+QPKG_NAME="pdulvp-nas-standby"
+INSTALL_PATH=`/sbin/getcfg -f $CONF $QPKG_NAME Install_Path`
+
+# iff invoked inside CHROOT environment
+[ -z "$CHROOT_DIR" -o -z "$QPKG_CLASS" ] && exit 1
+
+ENABLED=$(/sbin/getcfg $QPKG_NAME Enable -u -d FALSE -f $CONF)
+if [ "$ENABLED" != "TRUE" ]; then
+    echo "$QPKG_NAME is disabled."
+    exit 1
+fi
+
+echo "Start rcS_$QPKG_NAME.sh" 					>>/tmp/$QPKG_NAME.log
+echo "Home: $HOME" 					>>/tmp/$QPKG_NAME.log
+echo "pwd: `pwd`" 					>>/tmp/$QPKG_NAME.log
+
+#create a link from /sys/power/state in the installation dir into /opt/${QPKG_NAME}, accessible in HDStation startup script
+[ -d /opt/${QPKG_NAME} ] || mkdir -p /opt/${QPKG_NAME}
+ln -sf "$INSTALL_PATH/sys/power/state" /opt/${QPKG_NAME}/sys-power-state
+
+[ -d /opt/startup_shell ] || mkdir -p /opt/startup_shell
+ln -sf "$INSTALL_PATH/opt/startup_shell/startup_${QPKG_NAME}.sh" /opt/startup_shell/startup_${QPKG_NAME}.sh
+ln -sf "$INSTALL_PATH/opt/startup_shell/stop_${QPKG_NAME}.sh" /opt/startup_shell/stop_${QPKG_NAME}.sh
